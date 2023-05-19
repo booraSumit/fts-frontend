@@ -5,8 +5,10 @@ import AggregateCard from "../components/Cards/AggregateCard";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileLines } from "@fortawesome/free-regular-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
+  const navigate = useNavigate();
   return (
     <Box>
       <Box>
@@ -23,10 +25,11 @@ export default function Home() {
             padding={2}
             bgcolor={"white"}
             maxWidth={"200px"}
-            sx={{ borderRadius: "8px", textAlign: "center" }}
+            sx={{ borderRadius: "8px", textAlign: "center", cursor: "pointer" }}
             boxShadow={25}
             border={1}
             borderColor="border.color"
+            onClick={() => navigate("/upload-file")}
           >
             <FontAwesomeIcon
               icon={faFileLines}

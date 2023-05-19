@@ -16,7 +16,7 @@ export default function DefaultLayout(props) {
   const breakPointlg = useMediaQuery(useTheme().breakpoints.up("lg"));
   const mainBound = useBoundingClientRect(".main");
   useEffect(() => {
-    if (!isAuthenticated) navigate("/sign-in");
+    // if (!isAuthenticated) navigate("/sign-in");
   }, [isAuthenticated]);
   return (
     <>

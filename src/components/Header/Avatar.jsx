@@ -16,6 +16,10 @@ import TuneRoundedIcon from "@mui/icons-material/TuneRounded";
 import PersonOutlineRoundedIcon from "@mui/icons-material/PersonOutlineRounded";
 import CreditCardRoundedIcon from "@mui/icons-material/CreditCardRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
+import { logout } from "../../store/auth";
+import { useDispatch, useSelector } from "react-redux";
+import Loading from "../loading";
+import zIndex from "@mui/material/styles/zIndex";
 
 const menu = {
   menuItem: {
@@ -27,8 +31,18 @@ const menu = {
 export default function AppAvatar() {
   const [anchorEl, setAnchorEl] = useState(null);
   const showMenu = Boolean(anchorEl);
+
+  const { isLoading } = useSelector((state) => state.entity.auth);
+
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    setAnchorEl(null);
+  };
   return (
     <>
+      <Loading open={isLoading} />
       <Tooltip title={"User Profile"}>
         <IconButton onClick={(e) => setAnchorEl(e.target)}>
           <Avatar />
@@ -45,7 +59,11 @@ export default function AppAvatar() {
           //   filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
         }}
         PaperProps={{
-          sx: { px: 2, width: "220px", border: "1px solid #efefef" },
+          sx: {
+            px: 2,
+            width: "220px",
+            border: "1px solid #efefef",
+          },
         }}
         elevation={0}
       >
@@ -93,7 +111,7 @@ export default function AppAvatar() {
           <ListItemIcon>
             <LogoutRoundedIcon />
           </ListItemIcon>
-          <ListItemText primary="Logout" />
+          <ListItemText primary="Logout" onClick={handleLogout} />
         </MenuItem>
       </Menu>
     </>

@@ -73,6 +73,7 @@ export default function Signin() {
   };
 
   useEffect(() => {
+    console.log(isAuthenticated);
     if (isAuthenticated) navigate("/");
   }, [isAuthenticated]);
 
