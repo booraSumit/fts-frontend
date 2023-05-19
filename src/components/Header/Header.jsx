@@ -8,7 +8,6 @@ import {
   Stack,
   InputAdornment,
   IconButton,
-  ListItemIcon,
   Badge,
 } from "@mui/material";
 
@@ -19,7 +18,6 @@ import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import Avatar from "./Avatar";
-import { drawerWidth } from "../../styles/utilStyles";
 
 export default function Header() {
   const dispatch = useDispatch();

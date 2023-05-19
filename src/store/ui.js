@@ -15,8 +15,6 @@ const slice = createSlice({
 export const { showDrawer } = slice.actions;
 export default slice.reducer;
 
-export const toggleDrawer = () => {
-  return (dispatch) => {
-    dispatch(showDrawer());
-  };
+export const toggleDrawer = () => (dispatch) => {
+  dispatch(showDrawer());
 };
