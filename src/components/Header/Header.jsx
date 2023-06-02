@@ -27,7 +27,7 @@ export default function Header() {
       <AppBar
         sx={{
           backgroundColor: "white",
-          py: 3,
+          py: 1,
           position: "relative",
         }}
         elevation={0}

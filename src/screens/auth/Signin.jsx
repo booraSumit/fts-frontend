@@ -6,6 +6,7 @@ import {
   Typography,
   InputAdornment,
   Button,
+  Stack,
 } from "@mui/material";
 import Joi from "joi";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,7 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 
-import loginIllustration from "../../assets/img/login.svg";
+import cbluLogo from "../../assets/img/cblu logo.png";
 
 import { login } from "../../store/auth";
 import { useNavigate } from "react-router-dom";
@@ -80,100 +81,100 @@ export default function Signin() {
   return (
     <>
       <Loading open={isLoading} />
-      <Box>
-        <Grid container sx={{ height: "100vh" }} spacing={3}>
-          <Grid item sm={12} md={6}>
-            <Box p={4} mt={6}>
-              <Typography
-                variant="h4"
-                gutterBottom
-                fontWeight={500}
-                color={"primary.main"}
-              >
-                Welcome Back
-              </Typography>
-              <Typography variant="h5" my={4} textAlign={"center"}>
-                Login your account
-              </Typography>
-              <Box>
-                <TextField
-                  fullWidth
-                  hiddenLabel
-                  error={!!error.email}
-                  helperText={error.email}
-                  placeholder="Email"
-                  type="email"
-                  value={form["email"]}
-                  onChange={(e) => setField("email", e.target.value)}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <FontAwesomeIcon icon={faUser} />
-                      </InputAdornment>
-                    ),
-                  }}
-                  sx={{
-                    "& .MuiInputBase-input::placeholder": {
-                      fontWeight: "600",
-                    },
-                    "& .MuiInputBase-input": {
-                      py: 1.5,
-                    },
-                    my: 2,
-                  }}
-                />
-                <TextField
-                  fullWidth
-                  hiddenLabel
-                  error={!!error.password}
-                  helperText={error.password}
-                  placeholder="Password"
-                  type="password"
-                  value={form["password"]}
-                  onChange={(e) => setField("password", e.target.value)}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <FontAwesomeIcon icon={faLock} />
-                      </InputAdornment>
-                    ),
-                  }}
-                  sx={{
-                    "& .MuiInputBase-input::placeholder": {
-                      fontWeight: "600",
-                    },
-                    "& .MuiInputBase-input": {
-                      py: 1.5,
-                    },
-                    my: 2,
-                  }}
-                />
-                <Button
-                  variant="contained"
-                  fullWidth
-                  size="large"
-                  sx={{ my: 2 }}
-                  onClick={handleSubmit}
-                >
-                  Log in
-                </Button>
-              </Box>
-            </Box>
-          </Grid>
-          <Grid
-            item
-            md={6}
-            sx={{ display: { xs: "none", md: "block" } }}
-            alignSelf={"center"}
-          >
+      <Stack justifyContent="center" alignItems="center" height={"100vh"}>
+        <Stack
+          direction={{ sx: "column", md: "row" }}
+          alignItems="center"
+          gap={3}
+        >
+          <Box maxWidth={{ xs: "250px", md: "300px" }}>
             <img
               style={{ width: "100%" }}
-              src={loginIllustration}
+              src={cbluLogo}
               alt="log in illustration"
             />
-          </Grid>
-        </Grid>
-      </Box>
+          </Box>
+
+          <Box p={4}>
+            <Typography
+              variant="h4"
+              gutterBottom
+              fontWeight={500}
+              textAlign={"center"}
+              color={"primary.main"}
+              mb={4}
+            >
+              Welcome Back
+            </Typography>
+            <Typography variant="h5" my={1}>
+              Login your account
+            </Typography>
+            <Box>
+              <TextField
+                fullWidth
+                hiddenLabel
+                error={!!error.email}
+                helperText={error.email}
+                placeholder="Email"
+                type="email"
+                value={form["email"]}
+                onChange={(e) => setField("email", e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <FontAwesomeIcon icon={faUser} />
+                    </InputAdornment>
+                  ),
+                }}
+                sx={{
+                  "& .MuiInputBase-input::placeholder": {
+                    fontWeight: "600",
+                  },
+                  "& .MuiInputBase-input": {
+                    py: 1.5,
+                  },
+                  my: 2,
+                }}
+              />
+              <TextField
+                fullWidth
+                hiddenLabel
+                error={!!error.password}
+                helperText={error.password}
+                placeholder="Password"
+                type="password"
+                value={form["password"]}
+                onChange={(e) => setField("password", e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <FontAwesomeIcon icon={faLock} />
+                    </InputAdornment>
+                  ),
+                }}
+                sx={{
+                  "& .MuiInputBase-input::placeholder": {
+                    fontWeight: "600",
+                  },
+                  "& .MuiInputBase-input": {
+                    py: 1.5,
+                  },
+                  my: 2,
+                }}
+              />
+              <Button
+                variant="contained"
+                fullWidth
+                size="large"
+                sx={{ my: 2 }}
+                onClick={handleSubmit}
+              >
+                Log in
+              </Button>
+            </Box>
+          </Box>
+        </Stack>
+      </Stack>
     </>
   );
 }

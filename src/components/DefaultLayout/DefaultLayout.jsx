@@ -8,6 +8,9 @@ import { drawerWidth } from "../../styles/utilStyles";
 import useBoundingClientRect from "../../hooks/useBoundingClientRect";
 import { Outlet, useNavigate } from "react-router-dom";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 export default function DefaultLayout(props) {
   const { isAuthenticated } = useSelector((state) => state.entity.auth);
   const navigate = useNavigate();
@@ -20,6 +23,7 @@ export default function DefaultLayout(props) {
   }, [isAuthenticated]);
   return (
     <>
+      <ToastContainer />
       <Drawer />
       <Stack
         sx={{
@@ -37,6 +41,7 @@ export default function DefaultLayout(props) {
             backgroundColor: "#f1f5f9",
             height: `calc(100vh - ${mainBound.top}px)`,
             boxSizing: "border-box",
+            overflowY: "auto",
           }}
           component="div"
           className="main"

@@ -44,8 +44,8 @@ export default function AppAvatar() {
     <>
       <Loading open={isLoading} />
       <Tooltip title={"User Profile"}>
-        <IconButton onClick={(e) => setAnchorEl(e.target)}>
-          <Avatar />
+        <IconButton>
+          <Avatar onClick={(e) => setAnchorEl(e.target)} />
         </IconButton>
       </Tooltip>
       <Menu
@@ -55,7 +55,7 @@ export default function AppAvatar() {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         sx={{
-          mt: 4.7,
+          mt: 2.7,
           //   filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
         }}
         PaperProps={{

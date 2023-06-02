@@ -33,6 +33,7 @@ const DraggableFileUpload = ({
   };
 
   const handleFileUpload = (files) => {
+    const fileArr = [];
     files.forEach((file) => {
       if (acceptedFileTypes && acceptedFileTypes.indexOf(file.type) === -1) {
         console.error("Invalid file type!");
@@ -45,10 +46,10 @@ const DraggableFileUpload = ({
       }
 
       // Perform file upload logic here
-
-      onFileUpload(file);
+      fileArr.push(file);
       //   console.log(file);
     });
+    onFileUpload(fileArr);
   };
 
   //   const onFileUpload = (file) => {};
@@ -93,6 +94,7 @@ const DraggableFileUpload = ({
             hidden
             onChange={handleFileChange}
             multiple
+            value={""}
           />
         </Typography>
       </Stack>
