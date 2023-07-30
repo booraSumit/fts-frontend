@@ -5,6 +5,7 @@ const slice = createSlice({
   initialState: {
     showDrawer: false,
     showFIlePreviewer: false,
+    headerBound: null,
   },
   reducers: {
     showDrawer: (state) => {
@@ -13,10 +14,13 @@ const slice = createSlice({
     showFIlePreviewer: (state) => {
       state.showFIlePreviewer = !state.showFIlePreviewer;
     },
+    setHeaderBound: (state, { payload }) => {
+      state.headerBound = payload.bound;
+    },
   },
 });
 
-export const { showDrawer, showFIlePreviewer } = slice.actions;
+export const { showDrawer, showFIlePreviewer, setHeaderBound } = slice.actions;
 export default slice.reducer;
 
 export const toggleDrawer = () => (dispatch) => {
@@ -25,4 +29,8 @@ export const toggleDrawer = () => (dispatch) => {
 
 export const toggleFilePreviewer = () => (dispatch) => {
   dispatch(showFIlePreviewer());
+};
+
+export const setHeadersBound = (bound) => (dispatch) => {
+  dispatch(setHeaderBound(bound));
 };

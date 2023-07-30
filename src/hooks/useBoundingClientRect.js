@@ -5,7 +5,7 @@ function useBoundingClientRect(className) {
   useEffect(() => {
     const calculateComponentRect = () => {
       const myComponent = document.querySelector(className);
-      const componentRect = myComponent.getBoundingClientRect();
+      const componentRect = myComponent?.getBoundingClientRect();
       setBoundingRect(componentRect);
     };
     calculateComponentRect();

@@ -7,8 +7,17 @@ const api =
   async (action) => {
     if (action.type !== actions.apiCallBegan.type) return next(action);
 
-    const { baseURL, url, method, data, onStart, onSuccess, onError } =
-      action.payload;
+    const {
+      baseURL,
+      url,
+      method,
+      data,
+      onStart,
+      onSuccess,
+      onError,
+      progress,
+      signal,
+    } = action.payload;
 
     if (onStart) dispatch({ type: onStart });
 
@@ -20,6 +29,13 @@ const api =
         url,
         method,
         data,
+        signal,
+        onUploadProgress: function (progressEvent) {
+          let percentCompleted = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+          progress ? progress(percentCompleted) : console.log(percentCompleted);
+        },
       });
       // General
       dispatch(actions.apiCallSuccess(response.data));

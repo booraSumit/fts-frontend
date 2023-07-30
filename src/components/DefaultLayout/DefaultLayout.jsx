@@ -1,29 +1,66 @@
-import React, { useEffect } from "react";
-import { Box, Stack, useMediaQuery, useTheme } from "@mui/material";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import {
+  Alert,
+  Box,
+  Slide,
+  Snackbar,
+  Stack,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
 
 import Drawer from "../SideNav/Drawer";
 import Header from "../Header/Header";
 import { drawerWidth } from "../../styles/utilStyles";
 import useBoundingClientRect from "../../hooks/useBoundingClientRect";
 import { Outlet, useNavigate } from "react-router-dom";
+import Breadcrumbs from "../Breadcrumbs";
+import { disconnect, initializeSocket } from "../../store/socket";
 
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+const Transistion = React.forwardRef((props, ref) => (
+  <Slide direction="down" ref={ref} {...props} />
+));
 
 export default function DefaultLayout(props) {
-  const { isAuthenticated } = useSelector((state) => state.entity.auth);
+  const dispatch = useDispatch();
+  const [showWelcome, setShowWelcome] = useState(false);
+  const { isAuthenticated, user, token } = useSelector(
+    (state) => state.entity.auth
+  );
+  const { socket, error, isConnected } = useSelector(
+    (state) => state.entity.socket
+  );
   const navigate = useNavigate();
 
   const showDrawer = useSelector((state) => state.ui.showDrawer);
   const breakPointlg = useMediaQuery(useTheme().breakpoints.up("lg"));
   const mainBound = useBoundingClientRect(".main");
   useEffect(() => {
-    // if (!isAuthenticated) navigate("/sign-in");
+    if (isAuthenticated) {
+      setShowWelcome(true);
+      // dispatch(initializeSocket());
+    }
   }, [isAuthenticated]);
+
   return (
     <>
-      <ToastContainer />
+      <Snackbar
+        TransitionComponent={Transistion}
+        open={showWelcome}
+        autoHideDuration={1500}
+        onClose={() => setShowWelcome(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          // onClose={() => setShowWelcome(false)}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          Welcome User
+        </Alert>
+      </Snackbar>
+
       <Drawer />
       <Stack
         sx={{
@@ -46,6 +83,7 @@ export default function DefaultLayout(props) {
           component="div"
           className="main"
         >
+          <Breadcrumbs />
           {/* {props.children} */}
           <Outlet />
         </Box>

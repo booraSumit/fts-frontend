@@ -3,9 +3,12 @@ import React, { useState } from "react";
 import Dragger from "../components/Dragger";
 import FilePreview from "../components/FilePreview";
 
-import { Badge, Box, Card, Stack } from "@mui/material";
+import { Badge, Box, Card, IconButton, Stack, Tooltip } from "@mui/material";
 import FileDetailsCard from "../components/Cards/FileDetailsCard";
 import { toast } from "react-toastify";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAnglesLeft } from "@fortawesome/free-solid-svg-icons";
+import FormDrawer from "../components/Drawer/FormDrawer";
 
 const acceptFile = [
   // "application/msword",
@@ -16,6 +19,8 @@ const acceptFile = [
 export default function Upload() {
   const [files, setFiles] = useState([]);
   const [currentPreviewFile, setCurrentPreviewFile] = useState(null);
+  const [showDrawer, setShowDrawer] = useState(false);
+
   const handleFileUpload = (file) => {
     const uniqueFiles = [];
     file.forEach((newFile) => {
@@ -49,7 +54,7 @@ export default function Upload() {
   };
 
   return (
-    <div>
+    <Box>
       <Dragger
         onFileUpload={handleFileUpload}
         maxFileSize={1024 * 1024 * 10 /*upload size 10mb */}
@@ -57,7 +62,7 @@ export default function Upload() {
       />
 
       <Stack direction="row" flexWrap="wrap" gap={2} mt={5}>
-        {files &&
+        {files.length > 0 &&
           files.map((file, idx) => (
             <FileDetailsCard
               key={idx}
@@ -74,6 +79,24 @@ export default function Upload() {
         file={currentPreviewFile}
         onClose={handlePreviewClose}
       />
-    </div>
+      {files.length > 0 && (
+        <Box
+          sx={{
+            position: "absolute",
+            right: 0,
+            top: "50%",
+            // zIndex: 20000,
+          }}
+        >
+          <Tooltip title="Oper Drawer" onClick={() => setShowDrawer(true)}>
+            <IconButton>
+              <FontAwesomeIcon icon={faAnglesLeft} />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      )}
+
+      <FormDrawer files={files} open={showDrawer} closeDrawer={setShowDrawer} />
+    </Box>
   );
 }

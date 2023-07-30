@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 
 import { useDispatch, useSelector } from "react-redux";
-import { toggleDrawer } from "../../store/ui";
+import { setHeadersBound, toggleDrawer } from "../../store/ui";
 
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
@@ -23,7 +23,13 @@ export default function Header() {
   const dispatch = useDispatch();
   const showDrawer = useSelector((state) => state.ui.showDrawer);
   return (
-    <Box>
+    <Box
+      ref={(el) => {
+        if (!el) return;
+        const bound = el.getBoundingClientRect();
+        dispatch(setHeadersBound({ bound }));
+      }}
+    >
       <AppBar
         sx={{
           backgroundColor: "white",
@@ -74,7 +80,7 @@ export default function Header() {
           <Stack
             sx={{ ml: "auto" }}
             direction="row"
-            gap={3}
+            gap={2}
             alignItems="center"
           >
             <Badge badgeContent={4} color="error">

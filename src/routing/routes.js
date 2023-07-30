@@ -4,17 +4,31 @@ import Home from "../screens/Home";
 import Signin from "../screens/auth/Signin";
 import Upload from "../screens/Upload";
 
+import { EDITOR, SIGNIN, UPLOADFILE } from "./routePaths";
+import Editor from "../components/editor";
+import PrivateRoute from "../screens/PrivateRoute";
+
 const router = createBrowserRouter([
+  // {
+  //   path: "/",
+  //   element: <DefaultLayout />,
+  //   // children: [{ index: true, element: <Home /> }],
+  // },
   {
-    path: "/",
-    element: <DefaultLayout />,
+    element: <PrivateRoute />,
     children: [
-      { index: true, element: <Home /> },
-      { path: "/upload-file", element: <Upload /> },
+      {
+        path: "/",
+        element: <DefaultLayout />,
+        children: [
+          { index: true, element: <Home /> },
+          { path: EDITOR, element: <Editor /> },
+        ],
+      },
     ],
   },
   {
-    path: "/sign-in",
+    path: SIGNIN,
     element: <Signin />,
   },
 ]);

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   Box,
-  Grid,
   TextField,
   Typography,
   InputAdornment,
@@ -20,16 +19,11 @@ import cbluLogo from "../../assets/img/cblu logo.png";
 import { login } from "../../store/auth";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../components/loading";
+import { toast } from "react-toastify";
 
 const validate = (value) => {
   const schema = Joi.object({
-    email: Joi.string()
-      .email({
-        minDomainSegments: 2,
-        tlds: { allow: ["com", "net"] },
-      })
-      .required()
-      .label("email"),
+    userName: Joi.string().max(50).min(3).required().label("email"),
 
     password: Joi.string().min(8).max(50).required(),
   }).options({ abortEarly: false, allowUnknown: true });
@@ -39,14 +33,15 @@ const validate = (value) => {
 
 export default function Signin() {
   const dispatch = useDispatch();
-  const { isAuthenticated, isLoading } = useSelector(
-    (state) => state.entity.auth
-  );
+  const {
+    isAuthenticated,
+    isLoading,
+    error: apiError,
+  } = useSelector((state) => state.entity.auth);
   const navigate = useNavigate();
   const [form, setForm] = useState({
-    email: "",
+    userName: "",
     password: "",
-    device_id: "window",
   });
   const [error, setErrors] = useState({});
 
@@ -74,20 +69,41 @@ export default function Signin() {
   };
 
   useEffect(() => {
-    console.log(isAuthenticated);
+    // console.log(isAuthenticated);
     if (isAuthenticated) navigate("/");
-  }, [isAuthenticated]);
+    if (apiError)
+      toast(apiError, {
+        autoClose: 3000,
+        progress: false,
+        type: "error",
+        position: "top-center",
+      });
+  }, [isAuthenticated, apiError]);
 
   return (
     <>
       <Loading open={isLoading} />
-      <Stack justifyContent="center" alignItems="center" height={"100vh"}>
+      <Stack
+        sx={{
+          background:
+            "linear-gradient(187deg, rgba(172,90,190,1) 0%, rgba(82,90,199,1) 100%)",
+          overflowY: "auto",
+        }}
+        justifyContent="center"
+        alignItems="center"
+        height={"100vh"}
+        px={2}
+      >
         <Stack
           direction={{ sx: "column", md: "row" }}
           alignItems="center"
+          justifyContent="space-between"
           gap={3}
+          sx={{ backgroundColor: "white", borderRadius: "15px" }}
+          boxShadow={25}
+          p={{ xs: "2rem 0", sm: 10 }}
         >
-          <Box maxWidth={{ xs: "250px", md: "300px" }}>
+          <Box maxWidth={{ xs: "180px", md: "280px" }}>
             <img
               style={{ width: "100%" }}
               src={cbluLogo}
@@ -95,30 +111,30 @@ export default function Signin() {
             />
           </Box>
 
-          <Box p={4}>
+          <Box p={4} maxWidth={"350px"}>
             <Typography
               variant="h4"
               gutterBottom
               fontWeight={500}
               textAlign={"center"}
-              color={"primary.main"}
-              mb={4}
+              color={"#111"}
+              mb={3}
             >
-              Welcome Back
+              Login
             </Typography>
-            <Typography variant="h5" my={1}>
+            {/* <Typography variant="h5" my={1}>
               Login your account
-            </Typography>
+            </Typography> */}
             <Box>
               <TextField
                 fullWidth
                 hiddenLabel
-                error={!!error.email}
-                helperText={error.email}
-                placeholder="Email"
-                type="email"
-                value={form["email"]}
-                onChange={(e) => setField("email", e.target.value)}
+                error={!!error.userName}
+                helperText={error.userName}
+                placeholder="User Name"
+                type="text"
+                value={form["userName"]}
+                onChange={(e) => setField("userName", e.target.value)}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">

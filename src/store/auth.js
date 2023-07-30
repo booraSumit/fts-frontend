@@ -13,6 +13,7 @@ const slice = createSlice({
   },
   reducers: {
     authRequested: (state) => {
+      state.error = null;
       state.isLoading = true;
     },
     authSuccessfull: (state, { payload }) => {
@@ -27,7 +28,7 @@ const slice = createSlice({
     },
     authError: (state, { payload }) => {
       state.isLoading = false;
-      state.error = payload.message || payload.response.data;
+      state.error = payload?.response?.data || payload.message;
     },
     logoutRequested: (state) => {
       state.isLoading = true;
@@ -44,7 +45,7 @@ const slice = createSlice({
     },
     logoutError: (state, { payload }) => {
       state.isLoading = false;
-      state.error = payload.message || payload.response.data;
+      state.error = payload?.response?.data || payload.message;
     },
   },
 });
@@ -66,7 +67,7 @@ export const logout = () => (dispatch, getState) => {
     apiCallBegan({
       baseURL: BASE_URL,
       method: "post",
-      data: { user_id: getState().entity.auth?.user?._id },
+      data: { dept_id: getState().entity.auth?.user?.dept_id },
       url: `logout`,
       onStart: logoutRequested.type,
       onSuccess: logoutSuccessfull.type,

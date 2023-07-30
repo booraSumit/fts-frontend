@@ -14,6 +14,10 @@ const theme = createTheme({
       color: "#e2e8f0",
     },
   },
+  action: {
+    backgroundColor: "#edf0fe",
+    borderColor: "#d5dcfd",
+  },
 });
 
 theme.shadows[25] = "0px 10px 20px rgba(200, 208, 216, 0.3)";

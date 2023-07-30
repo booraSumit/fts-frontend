@@ -1,25 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Typography,
   Avatar,
   Tooltip,
   IconButton,
   Menu,
-  ListItemButton,
+  Button,
   Divider,
   MenuItem,
   ListItemText,
   ListItemIcon,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 import TuneRoundedIcon from "@mui/icons-material/TuneRounded";
 import PersonOutlineRoundedIcon from "@mui/icons-material/PersonOutlineRounded";
-import CreditCardRoundedIcon from "@mui/icons-material/CreditCardRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
+
 import { logout } from "../../store/auth";
-import { useDispatch, useSelector } from "react-redux";
 import Loading from "../loading";
-import zIndex from "@mui/material/styles/zIndex";
 
 const menu = {
   menuItem: {
@@ -29,23 +33,53 @@ const menu = {
 };
 
 export default function AppAvatar() {
+  const [showDialog, setShowDialog] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const showMenu = Boolean(anchorEl);
 
-  const { isLoading } = useSelector((state) => state.entity.auth);
+  const { isLoading, user, error } = useSelector((state) => state.entity.auth);
+  const { socket } = useSelector((state) => state.entity.socket);
 
   const dispatch = useDispatch();
 
   const handleLogout = () => {
-    dispatch(logout());
     setAnchorEl(null);
+    dispatch(logout());
+    // socket.disconnect();
   };
+
+  useEffect(() => {
+    if (error) {
+      toast(error, {
+        autoClose: 3000,
+        progress: false,
+        type: "error",
+        position: "top-center",
+      });
+    }
+  }, [error]);
   return (
     <>
+      <Dialog
+        open={showDialog}
+        onClose={() => {
+          setShowDialog(false);
+        }}
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogContent>
+          <DialogContentText>Are You Sure !</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleLogout}>Yes</Button>
+          <Button onClick={() => setShowDialog(false)}>No</Button>
+        </DialogActions>
+      </Dialog>
       <Loading open={isLoading} />
       <Tooltip title={"User Profile"}>
-        <IconButton>
-          <Avatar onClick={(e) => setAnchorEl(e.target)} />
+        <IconButton onClick={(e) => setAnchorEl(e.target)}>
+          <Avatar />
         </IconButton>
       </Tooltip>
       <Menu
@@ -78,9 +112,9 @@ export default function AppAvatar() {
             padding: 0,
           }}
         >
-          <Typography variant="h6">Sumit</Typography>
+          <Typography variant="h6">{user?.user_name}</Typography>
           <Typography variant="subtitle1" color={"GrayText"}>
-            sumitbura75@gmail.com
+            {user?.name}
           </Typography>
         </MenuItem>
         <Divider />
@@ -101,17 +135,18 @@ export default function AppAvatar() {
           </ListItemIcon>
           <ListItemText primary="Settings" />
         </MenuItem>
-        <MenuItem style={menu.menuItem}>
-          <ListItemIcon>
-            <CreditCardRoundedIcon />
-          </ListItemIcon>
-          <ListItemText primary="Billing" />
-        </MenuItem>
-        <MenuItem style={menu.menuItem}>
+
+        <MenuItem
+          style={menu.menuItem}
+          onClick={() => {
+            setAnchorEl(null);
+            setShowDialog(true);
+          }}
+        >
           <ListItemIcon>
             <LogoutRoundedIcon />
           </ListItemIcon>
-          <ListItemText primary="Logout" onClick={handleLogout} />
+          <ListItemText primary="Logout" />
         </MenuItem>
       </Menu>
     </>
